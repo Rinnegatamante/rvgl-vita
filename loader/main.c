@@ -676,6 +676,7 @@ int nanosleep_hook(const struct timespec *req, struct timespec *rem) {
 static so_default_dynlib default_dynlib[] = {
 	{ "opendir", (uintptr_t)&opendir_fake },
 	{ "readdir", (uintptr_t)&readdir_fake },
+	{ "remove", (uintptr_t)&remove },
 	{ "closedir", (uintptr_t)&closedir_fake },
 	{ "readlink", (uintptr_t)&readlink },
 	{ "g_SDL_BufferGeometry_w", (uintptr_t)&g_SDL_BufferGeometry_w },
