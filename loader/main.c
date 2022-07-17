@@ -381,7 +381,7 @@ int CheckFileExists(const char *fname, int unk) {
 void patch_game(void) {
 	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), CheckFileExists);
-	//hook_addr(so_symbol(&rvgl_mod, "_Z14ShowMessageBoxPKcS0_i"), ret0);
+	hook_addr(so_symbol(&rvgl_mod, "_Z14ShowMessageBoxPKcS0_i"), ret0);
 	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), ret1);
 }
 
@@ -737,7 +737,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "bind", (uintptr_t)&bind },
 	{ "bsearch", (uintptr_t)&bsearch },
 	{ "btowc", (uintptr_t)&btowc },
-	{ "calloc", (uintptr_t)&calloc },
+	{ "calloc", (uintptr_t)&vglCalloc },
 	{ "ceil", (uintptr_t)&ceil },
 	{ "ceilf", (uintptr_t)&ceilf },
 	{ "chdir", (uintptr_t)&chdir_hook },
@@ -782,7 +782,7 @@ static so_default_dynlib default_dynlib[] = {
 	// { "fputwc", (uintptr_t)&fputwc },
 	{ "fputs", (uintptr_t)&fputs },
 	{ "fread", (uintptr_t)&fread },
-	{ "free", (uintptr_t)&free },
+	{ "free", (uintptr_t)&vglFree },
 	{ "freeaddrinfo", (uintptr_t)&freeaddrinfo },
 	{ "frexp", (uintptr_t)&frexp },
 	{ "frexpf", (uintptr_t)&frexpf },
@@ -846,9 +846,9 @@ static so_default_dynlib default_dynlib[] = {
 	{ "lrint", (uintptr_t)&lrint },
 	{ "lrintf", (uintptr_t)&lrintf },
 	{ "lseek", (uintptr_t)&lseek },
-	{ "malloc", (uintptr_t)&malloc },
+	{ "malloc", (uintptr_t)&vglMalloc },
 	{ "mbrtowc", (uintptr_t)&mbrtowc },
-	{ "memalign", (uintptr_t)&memalign },
+	{ "memalign", (uintptr_t)&vglMemalign },
 	{ "memchr", (uintptr_t)&sceClibMemchr },
 	{ "memcmp", (uintptr_t)&sceClibMemcmp },
 	{ "memcpy", (uintptr_t)&sceClibMemcpy },
@@ -904,7 +904,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "rand", (uintptr_t)&rand },
 	{ "read", (uintptr_t)&read },
 	{ "realpath", (uintptr_t)&realpath },
-	{ "realloc", (uintptr_t)&realloc },
+	{ "realloc", (uintptr_t)&vglRealloc },
 	{ "rewind", (uintptr_t)&rewind },
 	{ "recvmsg", (uintptr_t)&recvmsg },
 	{ "roundf", (uintptr_t)&roundf },
