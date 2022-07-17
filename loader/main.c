@@ -381,7 +381,6 @@ int CheckFileExists(const char *fname, int unk) {
 void patch_game(void) {
 	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), CheckFileExists);
-	hook_addr(so_symbol(&rvgl_mod, "_Z14ShowMessageBoxPKcS0_i"), ret0);
 	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), ret1);
 }
 
