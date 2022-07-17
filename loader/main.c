@@ -18,6 +18,7 @@
 #include <AL/efx.h>
 
 #include <mpg123.h>
+#include <sndfile.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
@@ -854,6 +855,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "memmove", (uintptr_t)&sceClibMemmove },
 	{ "memset", (uintptr_t)&sceClibMemset },
 	{ "mkdir", (uintptr_t)&mkdir },
+	{ "rmdir", (uintptr_t)&rmdir },
 	// { "mmap", (uintptr_t)&mmap},
 	// { "munmap", (uintptr_t)&munmap},
 	{ "modf", (uintptr_t)&modf },
@@ -1257,6 +1259,11 @@ static so_default_dynlib default_dynlib[] = {
 	{ "mpg123_exit", (uintptr_t)&mpg123_exit },
 	{ "mpg123_new", (uintptr_t)&mpg123_new },
 	{ "raise", (uintptr_t)&raise },
+	{ "alIsExtensionPresent", (uintptr_t)&alIsExtensionPresent },
+	{ "sf_seek", (uintptr_t)&sf_seek },
+	{ "sf_readf_short", (uintptr_t)&sf_readf_short },
+	{ "sf_open_virtual", (uintptr_t)&sf_open_virtual },
+	{ "sf_close", (uintptr_t)&sf_close },
 };
 static size_t numhooks = sizeof(default_dynlib) / sizeof(*default_dynlib);
 
