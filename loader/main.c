@@ -662,6 +662,10 @@ void *SDL_GL_GetProcAddress_fake(const char *symbol) {
 }
 
 int SDL_Init_fake(Uint32 flags) {
+	// Restoring loading screen
+	uint8_t *silent_load = (uint8_t *)so_symbol(&rvgl_mod, "silent_load");
+	*silent_load = 0;
+
     SDL_setenv("VITA_DISABLE_TOUCH_BACK", "1", 1);
     int r = SDL_Init(flags);
     SDL_GameControllerAddMapping("50535669746120436f6e74726f6c6c65,PSVita Controller,a:b2,b:b0,back:b4,dpdown:b6,dpleft:b7,dpright:b9,dpup:b8,leftshoulder:b10,leftstick:b14,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b15,righttrigger:a5,rightx:a2,righty:a3,start:b11,x:b3,y:b1,");
