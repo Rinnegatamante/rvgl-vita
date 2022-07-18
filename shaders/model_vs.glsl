@@ -41,7 +41,8 @@ void main(
 #ifdef USE_FOG
 	float2 out varFogCoord : TEXCOORD3,
 #endif
-	float4 out gl_Position : POSITION
+	float4 out gl_Position : POSITION,
+	float out gl_PointSize : PSIZE
 ) {
   float4 pos = inPosition;
 
@@ -101,4 +102,5 @@ void main(
 
   // clamp the color
   varColor = clamp(varColor, 0.0, 1.0);
+  gl_PointSize = 1.0f;
 }
