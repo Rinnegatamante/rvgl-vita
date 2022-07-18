@@ -378,10 +378,45 @@ int CheckFileExists(const char *fname, int unk) {
 	return file_exists(fname);
 }
 
+so_hook CreateConnectionMenu_orig, AddMenuItem_orig, CRD_SetDefaultControls_orig;
+void (*AddMenuItem) (int menu_index, void *menuitem);
+void *menuitem_connection_split, *menuitem_controller_type, *menuitem_controller_slot;
+int *settings;
+
+void CreateConnectionMenu(int menu_index) {
+	// Restoring Split Screen
+	SO_CONTINUE(int, CreateConnectionMenu_orig, menu_index);
+	AddMenuItem(menu_index, menuitem_connection_split);
+}
+
+void AddMenuItem_patched(int menu_index, void *menuitem) {
+	// Restore Controller Slot option
+	if (menuitem == menuitem_controller_type) {
+		SO_CONTINUE(int, AddMenuItem_orig, menu_index, menuitem_controller_slot);
+	}
+	SO_CONTINUE(int, AddMenuItem_orig, menu_index, menuitem);
+}
+
+void CRD_SetDefaultControls(int slot) {
+	// Forcing Player 1 to Controller 1
+	settings[175] = 0;
+	SO_CONTINUE(int, CRD_SetDefaultControls_orig, slot);
+}
+
 void patch_game(void) {
+	AddMenuItem = (void *)so_symbol(&rvgl_mod, "_Z11AddMenuItemiP9MENU_ITEM");
+	AddMenuItem_orig = hook_addr(AddMenuItem, AddMenuItem_patched);
+	menuitem_connection_split = (void *)so_symbol(&rvgl_mod, "menuitem_connection_split");
+	menuitem_controller_slot = (void *)so_symbol(&rvgl_mod, "menuitem_controller_slot");
+	menuitem_controller_type = (void *)so_symbol(&rvgl_mod, "menuitem_controller_type");
+	settings = (int *)so_symbol(&rvgl_mod, "settings");
+	
 	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), ret1);
+	CreateConnectionMenu_orig = hook_addr(so_symbol(&rvgl_mod, "_Z20CreateConnectionMenui"), CreateConnectionMenu);
+	
+	CRD_SetDefaultControls_orig = hook_addr(so_symbol(&rvgl_mod, "_Z22CRD_SetDefaultControlsi"), CRD_SetDefaultControls);
 }
 
 extern void *__aeabi_atexit;
@@ -666,15 +701,17 @@ int SDL_Init_fake(Uint32 flags) {
 	uint8_t *silent_load = (uint8_t *)so_symbol(&rvgl_mod, "silent_load");
 	*silent_load = 0;
 
-    SDL_setenv("VITA_DISABLE_TOUCH_BACK", "1", 1);
-    int r = SDL_Init(flags);
-    SDL_GameControllerAddMapping("50535669746120436f6e74726f6c6c65,PSVita Controller,a:b2,b:b0,back:b4,dpdown:b6,dpleft:b7,dpright:b9,dpup:b8,leftshoulder:b10,leftstick:b14,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b15,righttrigger:a5,rightx:a2,righty:a3,start:b11,x:b3,y:b1,");
-    return r;
+	SDL_setenv("VITA_DISABLE_TOUCH_BACK", "1", 1);
+	int r = SDL_Init(flags);
+	SDL_GameControllerAddMapping("50535669746120436f6e74726f6c6c65,PSVita Controller,a:b2,b:b0,back:b4,dpdown:b6,dpleft:b7,dpright:b9,dpup:b8,leftshoulder:b10,leftstick:b14,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b15,righttrigger:a5,rightx:a2,righty:a3,start:b11,x:b3,y:b1,");
+	return r;
 }
 
 int nanosleep_hook(const struct timespec *req, struct timespec *rem) {
 	const uint32_t usec = req->tv_sec * 1000 * 1000 + req->tv_nsec / 1000;
-	return sceKernelDelayThreadCB(usec);
+	if (usec > 0)
+		return sceKernelDelayThreadCB(usec);
+	return 0;
 }
 
 static so_default_dynlib default_dynlib[] = {
@@ -1573,7 +1610,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	int (* SDL_main)(int argc, char *args[]) = (void *) so_symbol(&rvgl_mod, "SDL_main");
-    SDL_main(1, args);
+	SDL_main(1, args);
 	
 	return 0;
 }
