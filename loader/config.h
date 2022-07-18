@@ -3,7 +3,7 @@
 
 //#define DEBUG
 
-#define MEMORY_NEWLIB_MB 128
+#define MEMORY_NEWLIB_MB 160
 #define MEMORY_VITAGL_THRESHOLD_MB 8
 
 #define DATA_PATH "ux0:data/rvgl"
