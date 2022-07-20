@@ -414,6 +414,8 @@ void patch_game(void) {
 	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), ret1);
+	hook_addr(so_symbol(&rvgl_mod, "_Z13WriteLogEntryPKcz"), ret0);
+	hook_addr(so_symbol(&rvgl_mod, "_Z20UpdateLastLoadedFilePKc"), ret0);
 	CreateConnectionMenu_orig = hook_addr(so_symbol(&rvgl_mod, "_Z20CreateConnectionMenui"), CreateConnectionMenu);
 	
 	CRD_SetDefaultControls_orig = hook_addr(so_symbol(&rvgl_mod, "_Z22CRD_SetDefaultControlsi"), CRD_SetDefaultControls);
