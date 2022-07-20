@@ -1,1 +1,3 @@
 build
+libc_bridge/out/*
+*.zip

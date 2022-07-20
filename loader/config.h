@@ -3,6 +3,7 @@
 
 //#define DEBUG
 
+#define MEMORY_SCELIBC_MB 4
 #define MEMORY_NEWLIB_MB 160
 #define MEMORY_VITAGL_THRESHOLD_MB 8
 

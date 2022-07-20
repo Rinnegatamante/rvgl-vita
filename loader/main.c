@@ -55,6 +55,7 @@
 #include "dialog.h"
 #include "so_util.h"
 #include "sha1.h"
+#include "libc_bridge.h"
 
 #ifdef DEBUG
 #define dlog printf
@@ -74,6 +75,7 @@ int file_exists(const char *path) {
 	return sceIoGetstat(path, &stat) >= 0;
 }
 
+int sceLibcHeapSize = MEMORY_SCELIBC_MB * 1024 * 1024;
 int _newlib_heap_size_user = MEMORY_NEWLIB_MB * 1024 * 1024;
 
 unsigned int _pthread_stack_default_user = 1 * 1024 * 1024;
@@ -414,6 +416,8 @@ void patch_game(void) {
 	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), CheckFileExists);
 	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), ret1);
+	hook_addr(so_symbol(&rvgl_mod, "_Z13WriteLogEntryPKcz"), printf);
+	//hook_addr(so_symbol(&rvgl_mod, "_Z20UpdateLastLoadedFilePKc"), ret0);
 	CreateConnectionMenu_orig = hook_addr(so_symbol(&rvgl_mod, "_Z20CreateConnectionMenui"), CreateConnectionMenu);
 	
 	CRD_SetDefaultControls_orig = hook_addr(so_symbol(&rvgl_mod, "_Z22CRD_SetDefaultControlsi"), CRD_SetDefaultControls);
@@ -635,9 +639,9 @@ FILE *fopen_hook(char *fname, char *mode) {
 	dlog("fopen(%s,%s)\n", fname, mode);
 	if (strncmp(fname, "ux0:", 4)) {
 		sprintf(real_fname, "ux0:data/rvgl/%s", fname);
-		f = fopen(real_fname, mode);
+		f = sceLibcBridge_fopen(real_fname, mode);
 	} else {
-		f = fopen(fname, mode);
+		f = sceLibcBridge_fopen(fname, mode);
 	}
 	return f;
 }
@@ -700,6 +704,37 @@ int nanosleep_hook(const struct timespec *req, struct timespec *rem) {
 	if (usec > 0)
 		return sceKernelDelayThreadCB(usec);
 	return 0;
+}
+
+off_t sceLibcBridge_ftello(FILE *stream) {
+	return (off_t)sceLibcBridge_ftell(stream);
+}
+
+int sceLibcBridge_fseeko(FILE *stream, off_t offset, int whence) {
+	return sceLibcBridge_fseek(stream, offset, whence);
+}
+
+int sceLibcBridge_fgetpos_hook(FILE *stream, long int *pos) {
+	*pos = sceLibcBridge_ftell(stream);
+	if (*pos != -1)
+		return 0;
+	return 1;
+}
+int sceLibcBridge_fsetpos_hook(FILE *stream, const long int *pos) {
+	if (sceLibcBridge_fseek(stream, *pos, SEEK_SET))
+		return 1;
+	return 0;
+}
+
+int sceLibcBridge_fprintf_hook(FILE * stream, const char * fmt, ... ) {
+	va_list list;
+	static char string[0x8000];
+
+	va_start(list, fmt);
+	vsprintf(string, fmt, list);
+	va_end(list);
+
+	return sceLibcBridge_fprintf(stream, string);
 }
 
 static so_default_dynlib default_dynlib[] = {
@@ -790,46 +825,45 @@ static so_default_dynlib default_dynlib[] = {
 	{ "exp2", (uintptr_t)&exp2 },
 	{ "expf", (uintptr_t)&expf },
 	{ "fabsf", (uintptr_t)&fabsf },
-	{ "fclose", (uintptr_t)&fclose },
+	{ "fclose", (uintptr_t)&sceLibcBridge_fclose },
 	{ "fcntl", (uintptr_t)&ret0 },
 	// { "fdopen", (uintptr_t)&fdopen },
-	{ "ferror", (uintptr_t)&ferror },
-	{ "fflush", (uintptr_t)&fflush },
-	{ "fgetc", (uintptr_t)&fgetc },
-	{ "fgetpos", (uintptr_t)&fgetpos },
-	{ "fsetpos", (uintptr_t)&fsetpos },
-	{ "fgets", (uintptr_t)&fgets },
+	{ "ferror", (uintptr_t)&sceLibcBridge_ferror },
+	{ "fflush", (uintptr_t)&sceLibcBridge_fflush },
+	{ "fgetc", (uintptr_t)&sceLibcBridge_fgetc },
+	{ "fgetpos", (uintptr_t)&sceLibcBridge_fgetpos_hook },
+	{ "fsetpos", (uintptr_t)&sceLibcBridge_fsetpos_hook },
+	{ "fgets", (uintptr_t)&sceLibcBridge_fgets },
 	{ "floor", (uintptr_t)&floor },
 	{ "floorf", (uintptr_t)&floorf },
-	{ "freopen", (uintptr_t)&freopen },
+	{ "freopen", (uintptr_t)&sceLibcBridge_freopen },
 	{ "fmod", (uintptr_t)&fmod },
 	{ "fmodf", (uintptr_t)&fmodf },
 	{ "fopen", (uintptr_t)&fopen_hook },
-	{ "fprintf", (uintptr_t)&fprintf },
-	{ "fputc", (uintptr_t)&fputc },
+	{ "fprintf", (uintptr_t)&sceLibcBridge_fprintf_hook },
+	{ "fputc", (uintptr_t)&sceLibcBridge_fputc },
 	// { "fputwc", (uintptr_t)&fputwc },
-	{ "fputs", (uintptr_t)&fputs },
-	{ "fread", (uintptr_t)&fread },
+	{ "fputs", (uintptr_t)&sceLibcBridge_fputs },
+	{ "fread", (uintptr_t)&sceLibcBridge_fread },
 	{ "free", (uintptr_t)&vglFree },
 	{ "freeaddrinfo", (uintptr_t)&freeaddrinfo },
 	{ "frexp", (uintptr_t)&frexp },
 	{ "frexpf", (uintptr_t)&frexpf },
-	// { "fscanf", (uintptr_t)&fscanf },
-	{ "fseek", (uintptr_t)&fseek },
-	{ "fseeko", (uintptr_t)&fseeko },
+	{ "fseek", (uintptr_t)&sceLibcBridge_fseek },
+	{ "fseeko", (uintptr_t)&sceLibcBridge_fseeko },
 	{ "fstat", (uintptr_t)&fstat },
-	{ "fscanf", (uintptr_t)&fscanf },
-	{ "ftell", (uintptr_t)&ftell },
-	{ "ftello", (uintptr_t)&ftello },
+	{ "fscanf", (uintptr_t)&sceLibcBridge_fscanf },
+	{ "ftell", (uintptr_t)&sceLibcBridge_ftell },
+	{ "ftello", (uintptr_t)&sceLibcBridge_ftello },
 	// { "ftruncate", (uintptr_t)&ftruncate },
-	{ "fwrite", (uintptr_t)&fwrite },
+	{ "fwrite", (uintptr_t)&sceLibcBridge_fwrite },
 	{ "getaddrinfo", (uintptr_t)&getaddrinfo },
 	{ "getsockname", (uintptr_t)&getsockname },
-	{ "getc", (uintptr_t)&getc },
+	{ "getc", (uintptr_t)&sceLibcBridge_getc },
 	{ "getpid", (uintptr_t)&ret0 },
 	{ "getcwd", (uintptr_t)&getcwd_hook },
 	{ "getenv", (uintptr_t)&ret0 },
-	{ "getwc", (uintptr_t)&getwc },
+	{ "getwc", (uintptr_t)&sceLibcBridge_getwc },
 	{ "gettimeofday", (uintptr_t)&gettimeofday },
 	{ "gzopen", (uintptr_t)&gzopen },
 	{ "inflate", (uintptr_t)&inflate },
@@ -925,15 +959,15 @@ static so_default_dynlib default_dynlib[] = {
 	{ "pthread_setspecific", (uintptr_t)&pthread_setspecific },
 	{ "sched_get_priority_min", (uintptr_t)&ret0 },
 	{ "sched_get_priority_max", (uintptr_t)&ret99 },
-	{ "putc", (uintptr_t)&putc },
-	{ "puts", (uintptr_t)&puts },
-	{ "putwc", (uintptr_t)&putwc },
+	{ "putc", (uintptr_t)&sceLibcBridge_putc },
+	{ "puts", (uintptr_t)&sceLibcBridge_puts },
+	{ "putwc", (uintptr_t)&sceLibcBridge_putwc },
 	{ "qsort", (uintptr_t)&qsort },
 	{ "rand", (uintptr_t)&rand },
 	{ "read", (uintptr_t)&read },
 	{ "realpath", (uintptr_t)&realpath },
 	{ "realloc", (uintptr_t)&vglRealloc },
-	{ "rewind", (uintptr_t)&rewind },
+	{ "rewind", (uintptr_t)&sceLibcBridge_rewind },
 	{ "recvmsg", (uintptr_t)&recvmsg },
 	{ "roundf", (uintptr_t)&roundf },
 	{ "rint", (uintptr_t)&rint },
@@ -945,7 +979,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "setlocale", (uintptr_t)&ret0 },
 	{ "setsockopt", (uintptr_t)&setsockopt },
 	{ "getsockopt", (uintptr_t)&getsockopt },
-	{ "setvbuf", (uintptr_t)&setvbuf },
+	// { "setvbuf", (uintptr_t)&setvbuf },
 	{ "sin", (uintptr_t)&sin },
 	{ "sinf", (uintptr_t)&sinf },
 	{ "sinh", (uintptr_t)&sinh },
@@ -995,11 +1029,11 @@ static so_default_dynlib default_dynlib[] = {
 	{ "toupper", (uintptr_t)&toupper },
 	{ "towlower", (uintptr_t)&towlower },
 	{ "towupper", (uintptr_t)&towupper },
-	{ "ungetc", (uintptr_t)&ungetc },
-	{ "ungetwc", (uintptr_t)&ungetwc },
+	{ "ungetc", (uintptr_t)&sceLibcBridge_ungetc },
+	{ "ungetwc", (uintptr_t)&sceLibcBridge_ungetwc },
 	{ "usleep", (uintptr_t)&usleep },
 	{ "nanosleep", (uintptr_t)&nanosleep_hook },
-	{ "vfprintf", (uintptr_t)&vfprintf },
+	{ "vfprintf", (uintptr_t)&sceLibcBridge_vfprintf },
 	{ "vprintf", (uintptr_t)&vprintf },
 	{ "vsnprintf", (uintptr_t)&vsnprintf },
 	{ "vsprintf", (uintptr_t)&vsprintf },
@@ -1509,7 +1543,7 @@ int main(int argc, char *argv[]) {
 	//kuKernelRegisterAbortHandler(abort_handler, NULL);
 	//SceUID crasher_thread = sceKernelCreateThread("crasher", crasher, 0x40, 0x1000, 0, 0, NULL);
 	//sceKernelStartThread(crasher_thread, 0, NULL);	
-	//sceSysmoduleLoadModule(SCE_SYSMODULE_RAZOR_CAPTURE);
+	sceSysmoduleLoadModule(SCE_SYSMODULE_RAZOR_CAPTURE);
 	
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 
