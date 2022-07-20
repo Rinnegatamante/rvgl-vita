@@ -35,13 +35,6 @@ In order to properly install the game, you'll have to follow these steps precise
 - Rename `ux0:data/rvgl/packs/sample.txt` to `ux0:data/rvgl/packs/default.txt`.
 - Extract `datafiles.zip` available in the Release page of this repository to `ux0:data` and overwrite files if asked.
 - Install the vpk and launch the game.
-- Once you get prompted with virtual keyboard, press a random letter and press on the button to hide the keyboard (The arrow on left bottom with black background).
-- You should have the Name section with the letter you pressed; click on the text section, it will proceed to profile selection.
-- Touch the created profile.
-- Using touch, navigate to Options -> Controller Settings and change Controller to PS Vita Controller.
-- Touch on the background of the game (so that the game returns to the previous menu).
-- Once done so, you'll be able to use physical keys.
-- (Optional) It's highely suggested to adjust control bindings and sensitivity and deadzone for the analog at your preferences.
 
 ## Build Instructions (For Developers)
 
