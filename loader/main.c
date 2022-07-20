@@ -656,22 +656,10 @@ void glShaderSource_hook(GLuint shader, GLsizei count, GLchar **string, const GL
 	glShaderSource(shader, count, string, length);
 }
 
-void glDeleteProgram_hook(GLuint prog) {
-	GLuint shaders[2];
-	GLsizei count;
-	glGetAttachedShaders(prog, 2, &count, shaders);
-	for (int i = 0; i < count; i++) {
-		glDeleteShader(shaders[i]);
-	}
-	glDeleteProgram(prog);
-}
-
 static so_default_dynlib gl_hook[] = {
 	{"glPixelStorei", (uintptr_t)&ret0},
 	{"glBlendColor", (uintptr_t)&ret0},
 	{"glDetachShader", (uintptr_t)&ret0},
-	{"glDeleteShader", (uintptr_t)&ret0},
-	{"glDeleteProgram", (uintptr_t)&glDeleteProgram_hook},
 	{"glGetShaderPrecisionFormat", (uintptr_t)&ret0},
 	{"glBindAttribLocation", (uintptr_t)&ret0},
 	{"glLinkProgram", (uintptr_t)&glLinkProgram_hook},
