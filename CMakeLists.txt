@@ -43,6 +43,7 @@ target_link_libraries(RVGL
   vorbisenc
   vorbisfile
   ogg
+  enet
   FLAC
   openal
   imgui
