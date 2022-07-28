@@ -72,6 +72,7 @@ target_link_libraries(RVGL
   SceHid_stub
   SceVshBridge_stub
   SceKernelDmacmgr_stub
+  SceIme_stub
 )
 
 vita_create_self(eboot.bin RVGL UNSAFE)

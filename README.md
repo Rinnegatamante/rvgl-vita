@@ -42,7 +42,7 @@ In order to build the loader, you'll need a [vitasdk](https://github.com/vitasdk
 You can find a precompiled version here: https://github.com/vitasdk/buildscripts/actions/runs/1102643776.  
 Additionally, you'll need these libraries to be compiled as well with `-mfloat-abi=softfp` added to their CFLAGS:
 
-- [SDL2_vitagl](https://github.com/Northfear/SDL/tree/vitagl)
+- [SDL2_vitagl](https://github.com/Rinnegatamante/SDL/tree/rvgl)
 
 - [libmathneon](https://github.com/Rinnegatamante/math-neon)
 

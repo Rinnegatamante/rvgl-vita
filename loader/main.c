@@ -399,10 +399,6 @@ void AddMenuItem_patched(int menu_index, void *menuitem) {
 	}
 	
 	SO_CONTINUE(int, AddMenuItem_orig, menu_index, menuitem);
-	
-	// Restore Text Input support for Host insertion
-	if (menuitem == menuitem_host_computer)
-		SDL_StartTextInput();
 }
 
 void CRD_SetDefaultControls(int slot) {
@@ -495,7 +491,6 @@ void patch_game(void) {
 	hook_addr(so_symbol(&rvgl_mod, "_Z13WriteLogEntryPKcz"), ret0);
 
 	CreateConnectionMenu_orig = hook_addr(so_symbol(&rvgl_mod, "_Z20CreateConnectionMenui"), CreateConnectionMenu);
-	
 	CRD_SetDefaultControls_orig = hook_addr(so_symbol(&rvgl_mod, "_Z22CRD_SetDefaultControlsi"), CRD_SetDefaultControls);
 }
 
@@ -1261,7 +1256,7 @@ static so_default_dynlib default_dynlib[] = {
 	{ "SDL_SetTextureColorMod", (uintptr_t)&SDL_SetTextureColorMod },
 	{ "SDL_ShowCursor", (uintptr_t)&SDL_ShowCursor },
 	{ "SDL_ShowSimpleMessageBox", (uintptr_t)&SDL_ShowSimpleMessageBox },
-	{ "SDL_StartTextInput", (uintptr_t)&ret0 },
+	{ "SDL_StartTextInput", (uintptr_t)&SDL_StartTextInput },
 	{ "SDL_StopTextInput", (uintptr_t)&SDL_StopTextInput },
 	{ "SDL_strdup", (uintptr_t)&SDL_strdup },
 	{ "SDL_UnlockMutex", (uintptr_t)&SDL_UnlockMutex },
