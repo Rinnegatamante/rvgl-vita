@@ -9,6 +9,25 @@ By doing so, it's basically as if we emulate a minimalist Android environment in
 
 ## Changelog
 
+### v1.2
+
+- Fixed and restored virtual keyboard for text inputing.
+- Added Online multiplayer support (For now, it's possible only to host from Vita, connecting to existing servers will time out in 99% cases).
+- Disabled game logging features. (Reduces storage usage and improves loading times).
+- Introduced shader caching (Improves booting time by 422% after the very first boot).
+- Reduced loading times by 333%.
+
+### v1.1
+
+- Resolved some missing symbols (Fixes some crashes).
+- Properly implemented message boxes support.
+- Fixed an issue causing some glitches in certain maps (For example Starts rendering in Musuem 2).
+- Greatly increased available memory for the engine by increasing newlib heap from 64MB to 160MB.
+- Restored loading screens from the PC build.
+- Restored Split Screen support from the PC build (Usable for up to 4 players local games on PSTV and on regular Vita with MiniVitaTV).
+- Disabled Onscreen Keyboard popup during text inputing since buggy.
+- Automatically bind Player 1 to Controller 1 at boot.
+
 ### v1.0
 
 - Initial release.
