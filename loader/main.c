@@ -408,90 +408,90 @@ void CRD_SetDefaultControls(int slot) {
 }
 
 void patch_game(void) {
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_create"), enet_host_create);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_destroy"), enet_host_destroy);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_connect"), enet_host_connect);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_broadcast"), enet_host_broadcast);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_compress"), enet_host_compress);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_channel_limit"), enet_host_channel_limit);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_bandwidth_limit"), enet_host_bandwidth_limit);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_bandwidth_throttle"), enet_host_bandwidth_throttle);
-	hook_addr(so_symbol(&rvgl_mod, "enet_list_clear"), enet_list_clear);
-	hook_addr(so_symbol(&rvgl_mod, "enet_list_insert"), enet_list_insert);
-	hook_addr(so_symbol(&rvgl_mod, "enet_list_remove"), enet_list_remove);
-	hook_addr(so_symbol(&rvgl_mod, "enet_list_move"), enet_list_move);
-	hook_addr(so_symbol(&rvgl_mod, "enet_list_size"), enet_list_size);
-	hook_addr(so_symbol(&rvgl_mod, "enet_packet_create"), enet_packet_create);
-	hook_addr(so_symbol(&rvgl_mod, "enet_packet_destroy"), enet_packet_destroy);
-	hook_addr(so_symbol(&rvgl_mod, "enet_packet_resize"), enet_packet_resize);
-	hook_addr(so_symbol(&rvgl_mod, "enet_crc32"), enet_crc32);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_throttle"), enet_peer_throttle);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_receive"), enet_peer_receive);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_reset_queues"), enet_peer_reset_queues);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_on_connect"), enet_peer_on_connect);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_on_disconnect"), enet_peer_on_disconnect);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_reset"), enet_peer_reset);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_ping_interval"), enet_peer_ping_interval);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_timeout"), enet_peer_timeout);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_queue_acknowledgement"), enet_peer_queue_acknowledgement);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_setup_outgoing_command"), enet_peer_setup_outgoing_command);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_queue_outgoing_command"), enet_peer_queue_outgoing_command);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_throttle_configure"), enet_peer_throttle_configure);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_send"), enet_peer_send);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_ping"), enet_peer_ping);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_disconnect_now"), enet_peer_disconnect_now);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_disconnect"), enet_peer_disconnect);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_disconnect_later"), enet_peer_disconnect_later);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_dispatch_incoming_unreliable_commands"), enet_peer_dispatch_incoming_unreliable_commands);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_dispatch_incoming_reliable_commands"), enet_peer_dispatch_incoming_reliable_commands);
-	hook_addr(so_symbol(&rvgl_mod, "enet_peer_queue_incoming_command"), enet_peer_queue_incoming_command);
-	hook_addr(so_symbol(&rvgl_mod, "enet_protocol_command_size"), enet_protocol_command_size);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_flush"), enet_host_flush);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_check_events"), enet_host_check_events);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_service"), enet_host_service);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_create"), (uintptr_t)enet_host_create);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_destroy"), (uintptr_t)enet_host_destroy);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_connect"), (uintptr_t)enet_host_connect);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_broadcast"), (uintptr_t)enet_host_broadcast);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_compress"), (uintptr_t)enet_host_compress);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_channel_limit"), (uintptr_t)enet_host_channel_limit);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_bandwidth_limit"), (uintptr_t)enet_host_bandwidth_limit);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_bandwidth_throttle"), (uintptr_t)enet_host_bandwidth_throttle);
+	hook_addr(so_symbol(&rvgl_mod, "enet_list_clear"), (uintptr_t)enet_list_clear);
+	hook_addr(so_symbol(&rvgl_mod, "enet_list_insert"), (uintptr_t)enet_list_insert);
+	hook_addr(so_symbol(&rvgl_mod, "enet_list_remove"), (uintptr_t)enet_list_remove);
+	hook_addr(so_symbol(&rvgl_mod, "enet_list_move"), (uintptr_t)enet_list_move);
+	hook_addr(so_symbol(&rvgl_mod, "enet_list_size"), (uintptr_t)enet_list_size);
+	hook_addr(so_symbol(&rvgl_mod, "enet_packet_create"), (uintptr_t)enet_packet_create);
+	hook_addr(so_symbol(&rvgl_mod, "enet_packet_destroy"), (uintptr_t)enet_packet_destroy);
+	hook_addr(so_symbol(&rvgl_mod, "enet_packet_resize"), (uintptr_t)enet_packet_resize);
+	hook_addr(so_symbol(&rvgl_mod, "enet_crc32"), (uintptr_t)enet_crc32);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_throttle"), (uintptr_t)enet_peer_throttle);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_receive"), (uintptr_t)enet_peer_receive);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_reset_queues"), (uintptr_t)enet_peer_reset_queues);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_on_connect"), (uintptr_t)enet_peer_on_connect);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_on_disconnect"), (uintptr_t)enet_peer_on_disconnect);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_reset"), (uintptr_t)enet_peer_reset);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_ping_interval"), (uintptr_t)enet_peer_ping_interval);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_timeout"), (uintptr_t)enet_peer_timeout);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_queue_acknowledgement"), (uintptr_t)enet_peer_queue_acknowledgement);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_setup_outgoing_command"), (uintptr_t)enet_peer_setup_outgoing_command);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_queue_outgoing_command"), (uintptr_t)enet_peer_queue_outgoing_command);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_throttle_configure"), (uintptr_t)enet_peer_throttle_configure);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_send"), (uintptr_t)enet_peer_send);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_ping"), (uintptr_t)enet_peer_ping);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_disconnect_now"), (uintptr_t)enet_peer_disconnect_now);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_disconnect"), (uintptr_t)enet_peer_disconnect);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_disconnect_later"), (uintptr_t)enet_peer_disconnect_later);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_dispatch_incoming_unreliable_commands"), (uintptr_t)enet_peer_dispatch_incoming_unreliable_commands);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_dispatch_incoming_reliable_commands"), (uintptr_t)enet_peer_dispatch_incoming_reliable_commands);
+	hook_addr(so_symbol(&rvgl_mod, "enet_peer_queue_incoming_command"), (uintptr_t)enet_peer_queue_incoming_command);
+	hook_addr(so_symbol(&rvgl_mod, "enet_protocol_command_size"), (uintptr_t)enet_protocol_command_size);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_flush"), (uintptr_t)enet_host_flush);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_check_events"), (uintptr_t)enet_host_check_events);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_service"), (uintptr_t)enet_host_service);
 	//hook_addr(so_symbol(&rvgl_mod, "enet_initialize"), enet_initialize);
 	//hook_addr(so_symbol(&rvgl_mod, "enet_deinitialize"), enet_deinitialize);
-	hook_addr(so_symbol(&rvgl_mod, "enet_host_random_seed"), enet_host_random_seed);
-	hook_addr(so_symbol(&rvgl_mod, "enet_time_get"), enet_time_get);
-	hook_addr(so_symbol(&rvgl_mod, "enet_time_set"), enet_time_set);
-	hook_addr(so_symbol(&rvgl_mod, "enet_address_set_host_ip"), enet_address_set_host_ip);
-	hook_addr(so_symbol(&rvgl_mod, "enet_address_set_host"), enet_address_set_host);
-	hook_addr(so_symbol(&rvgl_mod, "enet_address_get_host_ip"), enet_address_get_host_ip);
-	hook_addr(so_symbol(&rvgl_mod, "enet_address_get_host"), enet_address_get_host);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_bind"), enet_socket_bind);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_get_address"), enet_socket_get_address);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_listen"), enet_socket_listen);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_create"), enet_socket_create);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_set_option"), enet_socket_set_option);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_get_option"), enet_socket_get_option);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_connect"), enet_socket_connect);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_accept"), enet_socket_accept);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_shutdown"), enet_socket_shutdown);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_destroy"), enet_socket_destroy);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_send"), enet_socket_send);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_receive"), enet_socket_receive);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socketset_select"), enet_socketset_select);
-	hook_addr(so_symbol(&rvgl_mod, "enet_socket_wait"), enet_socket_wait);
-	hook_addr(so_symbol(&rvgl_mod, "enet_initialize_with_callbacks"), enet_initialize_with_callbacks);
-	hook_addr(so_symbol(&rvgl_mod, "enet_linked_version"), enet_linked_version);
-	hook_addr(so_symbol(&rvgl_mod, "enet_malloc"), enet_malloc);
-	hook_addr(so_symbol(&rvgl_mod, "enet_free"), enet_free);
+	hook_addr(so_symbol(&rvgl_mod, "enet_host_random_seed"), (uintptr_t)enet_host_random_seed);
+	hook_addr(so_symbol(&rvgl_mod, "enet_time_get"), (uintptr_t)enet_time_get);
+	hook_addr(so_symbol(&rvgl_mod, "enet_time_set"), (uintptr_t)enet_time_set);
+	hook_addr(so_symbol(&rvgl_mod, "enet_address_set_host_ip"), (uintptr_t)enet_address_set_host_ip);
+	hook_addr(so_symbol(&rvgl_mod, "enet_address_set_host"), (uintptr_t)enet_address_set_host);
+	hook_addr(so_symbol(&rvgl_mod, "enet_address_get_host_ip"), (uintptr_t)enet_address_get_host_ip);
+	hook_addr(so_symbol(&rvgl_mod, "enet_address_get_host"), (uintptr_t)enet_address_get_host);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_bind"), (uintptr_t)enet_socket_bind);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_get_address"), (uintptr_t)enet_socket_get_address);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_listen"), (uintptr_t)enet_socket_listen);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_create"), (uintptr_t)enet_socket_create);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_set_option"), (uintptr_t)enet_socket_set_option);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_get_option"), (uintptr_t)enet_socket_get_option);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_connect"), (uintptr_t)enet_socket_connect);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_accept"), (uintptr_t)enet_socket_accept);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_shutdown"), (uintptr_t)enet_socket_shutdown);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_destroy"), (uintptr_t)enet_socket_destroy);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_send"), (uintptr_t)enet_socket_send);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_receive"), (uintptr_t)enet_socket_receive);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socketset_select"), (uintptr_t)enet_socketset_select);
+	hook_addr(so_symbol(&rvgl_mod, "enet_socket_wait"), (uintptr_t)enet_socket_wait);
+	hook_addr(so_symbol(&rvgl_mod, "enet_initialize_with_callbacks"), (uintptr_t)enet_initialize_with_callbacks);
+	hook_addr(so_symbol(&rvgl_mod, "enet_linked_version"), (uintptr_t)enet_linked_version);
+	hook_addr(so_symbol(&rvgl_mod, "enet_malloc"), (uintptr_t)enet_malloc);
+	hook_addr(so_symbol(&rvgl_mod, "enet_free"), (uintptr_t)enet_free);
 	
 	AddMenuItem = (void *)so_symbol(&rvgl_mod, "_Z11AddMenuItemiP9MENU_ITEM");
-	AddMenuItem_orig = hook_addr(AddMenuItem, AddMenuItem_patched);
+	AddMenuItem_orig = hook_addr((uintptr_t)AddMenuItem, (uintptr_t)AddMenuItem_patched);
 	menuitem_connection_split = (void *)so_symbol(&rvgl_mod, "menuitem_connection_split");
 	menuitem_controller_slot = (void *)so_symbol(&rvgl_mod, "menuitem_controller_slot");
 	menuitem_controller_type = (void *)so_symbol(&rvgl_mod, "menuitem_controller_type");
 	menuitem_host_computer = (void *)so_symbol(&rvgl_mod, "menuitem_host_computer");
 	settings = (int *)so_symbol(&rvgl_mod, "settings");
 	
-	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), CheckFileExists);
-	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), CheckFileExists);
-	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), ret1);
-	hook_addr(so_symbol(&rvgl_mod, "_Z13WriteLogEntryPKcz"), ret0);
+	hook_addr(so_symbol(&rvgl_mod, "_Z15CheckFileExistsPKcb"), (uintptr_t)CheckFileExists);
+	hook_addr(so_symbol(&rvgl_mod, "_Z14CheckDirExistsPKcb"), (uintptr_t)CheckFileExists);
+	hook_addr(so_symbol(&rvgl_mod, "_Z18IsRedbookAvailablev"), (uintptr_t)ret1);
+	hook_addr(so_symbol(&rvgl_mod, "_Z13WriteLogEntryPKcz"), (uintptr_t)ret0);
 
-	CreateConnectionMenu_orig = hook_addr(so_symbol(&rvgl_mod, "_Z20CreateConnectionMenui"), CreateConnectionMenu);
-	CRD_SetDefaultControls_orig = hook_addr(so_symbol(&rvgl_mod, "_Z22CRD_SetDefaultControlsi"), CRD_SetDefaultControls);
+	CreateConnectionMenu_orig = hook_addr(so_symbol(&rvgl_mod, "_Z20CreateConnectionMenui"), (uintptr_t)CreateConnectionMenu);
+	CRD_SetDefaultControls_orig = hook_addr(so_symbol(&rvgl_mod, "_Z22CRD_SetDefaultControlsi"), (uintptr_t)CRD_SetDefaultControls);
 }
 
 extern void *__aeabi_atexit;
@@ -727,7 +727,7 @@ void glLinkProgram_hook(GLuint p) {
 
 void glShaderSource_hook(GLuint shader, GLsizei count, GLchar **string, const GLint *length) {
 	string[0][0] = string[0][1] = '/';
-	glShaderSource(shader, count, string, length);
+	glShaderSource(shader, count, (const GLchar *const *)string, length);
 }
 
 static so_default_dynlib gl_hook[] = {
@@ -753,7 +753,7 @@ void *SDL_GL_GetProcAddress_fake(const char *symbol) {
 	void *r = vglGetProcAddress(symbol);
 	if (!r) {
 		dlog("Cannot find symbol %s (Debug Address: 0x%X)\n", symbol, garbage_ptr);
-		r = garbage_ptr++;
+		r = (void *)(uintptr_t)garbage_ptr++;
 	}
 	return r;
 }
